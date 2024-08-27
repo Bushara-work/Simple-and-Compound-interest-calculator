@@ -9,7 +9,8 @@ def get_integer_input(prompt):
         except ValueError:
             print("Please enter a valid integer.")
 
-
+def round(variable):
+    variable = round(variable, 2)
 
 
 def main():
