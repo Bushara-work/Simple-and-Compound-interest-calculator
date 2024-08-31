@@ -1,16 +1,21 @@
 import math
 from decimal import *
-getcontext().rounding=ROUND_HALF_UP
 
-def get_integer_input(prompt):
+def get_rounded_input(prompt):
+    user_input = input(prompt)
+    try:
+        number = Decimal(user_input)
+        rounded_number = (number * 20).quantize(Decimal('1'), rounding=ROUND_HALF_UP) / 20
+        print(f"Rounded number: {rounded_number}")
+    except Exception as e:
+        print(f"Invalid input: {e}")
+
+def get_int_input(prompt):
     while True:
         try:
             return Decimal(int(input(prompt)))
         except ValueError:
             print("Please enter a valid integer.")
-
-def round(variable):
-    variable = round(variable, 2)
 
 
 def main():
@@ -18,7 +23,7 @@ def main():
     print("1. Simple Interest")
     print("2. Compound Interest")
     while True:
-        choice = get_integer_input("Enter 1 or 2: ")
+        choice = get_int_input("Enter 1 or 2: ")
         if choice in [1, 2]:
             break
 
@@ -29,35 +34,40 @@ def main():
         print("2. Interest Earned")
         print("3. Interest Rate")
         print("4. Time")
-        variable = get_integer_input("Enter 1, 2, 3, or 4: ")
+        while True:
+            variable = get_int_input("Enter 1, 2, 3, or 4: ")
+            if variable in [1, 2]:
+                break
+        
 
         if variable == 1:
-            interest = get_integer_input("Enter the interest amount (in dollars): ")
-            rate = get_integer_input("Enter the rate of interest (in percentage): ")
-            time = get_integer_input("Enter the time period (in years): ")
+            interest = get_rounded_input("Enter the interest amount (in dollars): ")
+            rate = get_rounded_input("Enter the rate of interest (in percentage): ")
+            time = get_rounded_input("Enter the time period (in years): ")
             principal = interest / ((rate/100) * time)
-            print(f"Principal: {principal} dollars")
+
+            print(f"Principal: {principal:.2f} dollars")
         
         elif variable == 2:
-            principal = get_integer_input("Enter the principal amount (in dollars): ")
-            rate = get_integer_input("Enter the rate of interest (in percentage): ")
-            time = get_integer_input("Enter the time period (in years): ")
+            principal = get_rounded_input("Enter the principal amount (in dollars): ")
+            rate = get_rounded_input("Enter the rate of interest (in percentage): ")
+            time = get_rounded_input("Enter the time period (in years): ")
             interest = principal * (rate/100) * time
-            print(f"Interest: {interest} dollars")
+            print(f"Interest: {interest:.2f} dollars")
 
         elif variable == 3:
-            principal = get_integer_input("Enter the principal amount (in dollars): ")
-            interest = get_integer_input("Enter the interest amount (in dollars): ")
-            time = get_integer_input("Enter the time period (in years): ")
+            principal = get_rounded_input("Enter the principal amount (in dollars): ")
+            interest = get_rounded_input("Enter the interest amount (in dollars): ")
+            time = get_rounded_input("Enter the time period (in years): ")
             rate = interest / (principal * time)
-            print(f"Rate: {rate} %")
+            print(f"Rate: {rate:.2f} %")
 
         elif variable == 4:
-            principal = get_integer_input("Enter the principal amount (in dollars): ")
-            interest = get_integer_input("Enter the interest amount (in dollars): ")
-            rate = get_integer_input("Enter the rate of interest (in percentage): ")
+            principal = get_rounded_input("Enter the principal amount (in dollars): ")
+            interest = get_rounded_input("Enter the interest amount (in dollars): ")
+            rate = get_rounded_input("Enter the rate of interest (in percentage): ")
             time = interest / (principal * (rate/100))
-            print(f"Time: {time} years")
+            print(f"Time: {time:.2f} years")
 
 
     elif choice == 2:
@@ -71,7 +81,7 @@ def main():
         print("6. Compounding Period - Yearly")
 
         while True:
-            variable = get_integer_input("Enter 1, 2, 3, 4, 5, or 6: ")
+            variable = get_int_input("Enter 1, 2, 3, 4, 5, or 6: ")
             if variable in [1,2,3,4,5,6]:
                 break
 
@@ -82,21 +92,20 @@ def main():
                 if have_interest_earned in ['yes', 'no']:
                     break
 
-            final = get_integer_input("Enter the Final/Total amount (in dollars): ")
+            final = get_rounded_input("Enter the Final/Total amount (in dollars): ")
 
             if have_interest_earned == 'yes':
-                interest_earned = get_integer_input("Enter the amount of interest earned (in dollars): ")
+                interest_earned = get_rounded_input("Enter the amount of interest earned (in dollars): ")
                 principal = final - interest_earned
                           
             elif have_interest_earned == 'no':
-                rate = get_integer_input("Enter the rate of interest (in percentage): ")
-                time = get_integer_input("Enter the time period (in years): ")
-                compound = get_integer_input("Enter the number of compounding periods per year: ")
+                rate = get_rounded_input("Enter the rate of interest (in percentage): ")
+                time = get_rounded_input("Enter the time period (in years): ")
+                compound = get_rounded_input("Enter the number of compounding periods per year: ")
                     
                 principal = final / (1+((rate/100)/compound))**(compound*time)
                     
-            principal = principal
-            print(f"Principal Value: {principal} dollars")
+            print(f"Principal Value: {principal:.2f} dollars")
         
         #Final/Total Value
         elif variable == 2:
@@ -106,22 +115,21 @@ def main():
                 if have_interest_earned in ['yes', 'no']:
                     break
 
-            principal = get_integer_input("Enter the principal amount (in dollars): ")
+            principal = get_rounded_input("Enter the principal amount (in dollars): ")
 
             if have_interest_earned == 'yes':
-                interest_earned = get_integer_input("Enter the amount of interest earned (in dollars): ")
+                interest_earned = get_rounded_input("Enter the amount of interest earned (in dollars): ")
                 
                 final = principal + interest_earned
             
             elif have_interest_earned == 'no':
-                rate = get_integer_input("Enter the rate of interest (in percentage): ")
-                time = get_integer_input("Enter the time period (in years): ")
-                compound = get_integer_input("Enter the number of compounding periods per year: ")
+                rate = get_rounded_input("Enter the rate of interest (in percentage): ")
+                time = get_rounded_input("Enter the time period (in years): ")
+                compound = get_rounded_input("Enter the number of compounding periods per year: ")
                 
                 final = principal * (1 + (rate/compound))**(compound*time)
             
-            final = final
-            print(f"Final/Total Value: {final} dollars")
+            print(f"Final/Total Value: {final:.2f} dollars")
         
         #Interest earned
         elif variable == 3:
@@ -132,30 +140,30 @@ def main():
                     break
             
             if have_final_or_principal_or_both == 'both':
-                principal = get_integer_input("Enter the principal amount (in dollars): ")
+                principal = get_rounded_input("Enter the principal amount (in dollars): ")
 
-                final = get_integer_input("Enter the Final/Total Value (in dollars): ")
+                final = get_rounded_input("Enter the Final/Total Value (in dollars): ")
                 interest_earned = final - principal
 
             elif have_final_or_principal_or_both == 'principal value':
-                principal = get_integer_input("Enter the principal amount (in dollars): ")
-                rate = get_integer_input("Enter the rate of interest (in percentage): ")
-                time = get_integer_input("Enter the time period (in years): ")
-                compound = get_integer_input("Enter the number of compounding periods per year: ")
+                principal = get_rounded_input("Enter the principal amount (in dollars): ")
+                rate = get_rounded_input("Enter the rate of interest (in percentage): ")
+                time = get_rounded_input("Enter the time period (in years): ")
+                compound = get_rounded_input("Enter the number of compounding periods per year: ")
                 interest_earned = principal * (1 + rate/100 / compound)**(compound*time) - principal
 
              
             elif have_final_or_principal_or_both == 'final value':
-                final = get_integer_input("Enter the Final/Total Value (in dollars): ")
-                rate = get_integer_input("Enter the rate of interest (in percentage): ")
-                time = get_integer_input("Enter the time period (in years): ")
-                compound = get_integer_input("Enter the number of compounding periods per year: ")
+                final = get_rounded_input("Enter the Final/Total Value (in dollars): ")
+                rate = get_rounded_input("Enter the rate of interest (in percentage): ")
+                time = get_rounded_input("Enter the time period (in years): ")
+                compound = get_rounded_input("Enter the number of compounding periods per year: ")
 
                 principal = final / (1+((rate/100)/compound))**(compound*time)
 
                 interest_earned = final - principal
     
-            print(f"Interest Earned: {interest_earned}")        
+            print(f"Interest Earned: {interest_earned:.2f}")        
         
         #pythons math.sqrt(x) could also work here
         elif variable == 4:
@@ -165,29 +173,29 @@ def main():
                 if have_principal_or_final_or_earned_interst in ['principal value', 'final value', 'interest earned']:
                     break
 
-            time = get_integer_input("Enter the time period (in years): ")
-            compound = get_integer_input("Enter the number of compounding periods per year: ")
+            time = get_rounded_input("Enter the time period (in years): ")
+            compound = get_rounded_input("Enter the number of compounding periods per year: ")
 
             if have_principal_or_final_or_earned_interst == 'principal value':
-                final = get_integer_input("Enter the Final/Total Value (in dollars): ")
-                interest_earned = get_integer_input("Enter the interest amount (in dollars): ")
+                final = get_rounded_input("Enter the Final/Total Value (in dollars): ")
+                interest_earned = get_rounded_input("Enter the interest amount (in dollars): ")
 
                 rate = compound * ((final/(final-interest_earned)) ** (1 / (compound * time )) - 1)
             
             elif have_principal_or_final_or_earned_interst == 'final value':
-                principal = get_integer_input("Enter the principal amount (in dollars): ")
-                interest_earned = get_integer_input("Enter the interest amount (in dollars): ")
+                principal = get_rounded_input("Enter the principal amount (in dollars): ")
+                interest_earned = get_rounded_input("Enter the interest amount (in dollars): ")
 
                 rate = compound * (((principal + interest_earned)/principal) ** (1 / (compound * time )) - 1)
 
             elif have_principal_or_final_or_earned_interst == 'interest earned':
-                principal = get_integer_input("Enter the principal amount (in dollars): ")
-                final = get_integer_input("Enter the Final/Total Value (in dollars): ")
+                principal = get_rounded_input("Enter the principal amount (in dollars): ")
+                final = get_rounded_input("Enter the Final/Total Value (in dollars): ")
 
                 rate = compound * ((final/principal) ** (1 / (compound * time)) - 1)
         
             rate = rate * 100
-            print(f"Rate: {rate} %")
+            print(f"Rate: {rate:.2f} %")
         
 
 
@@ -199,38 +207,38 @@ def main():
                 if have_principal_or_final_or_earned_interst in ['principal value', 'final value', 'interest earned']:
                     break
             
-            rate = get_integer_input("Enter the rate of interest (in percentage): ")
-            compound = get_integer_input("Enter the number of compounding periods per year: ")
+            rate = get_rounded_input("Enter the rate of interest (in percentage): ")
+            compound = get_rounded_input("Enter the number of compounding periods per year: ")
 
             if have_principal_or_final_or_earned_interst == 'principal value':
-                final = get_integer_input("Enter the Final/Total Value (in dollars): ")
-                interest_earned = get_integer_input("Enter the interest amount (in dollars): ")
+                final = get_rounded_input("Enter the Final/Total Value (in dollars): ")
+                interest_earned = get_rounded_input("Enter the interest amount (in dollars): ")
 
                 time = math.log(final/(final - interest_earned)) / (compound * math.log(1 + rate/100 /compound))
             
             elif have_principal_or_final_or_earned_interst == 'final value':
-                principal = get_integer_input("Enter the principal amount (in dollars): ")
-                interest_earned = get_integer_input("Enter the interest amount (in dollars): ")
+                principal = get_rounded_input("Enter the principal amount (in dollars): ")
+                interest_earned = get_rounded_input("Enter the interest amount (in dollars): ")
 
                 time = math.log((principal + interest_earned)/principal) / (compound * math.log(1 + rate/100 /compound))
 
             elif have_principal_or_final_or_earned_interst == 'interest earned':
-                principal = get_integer_input("Enter the principal amount (in dollars): ")
-                final = get_integer_input("Enter the Final/Total Value (in dollars): ")
+                principal = get_rounded_input("Enter the principal amount (in dollars): ")
+                final = get_rounded_input("Enter the Final/Total Value (in dollars): ")
 
                 time = math.log(final/principal) / (compound * math.log(1 + rate/100 /compound))
             
-            print(f"Time: {time} years")
+            print(f"Time: {time:.2f} years")
         
         
         
         
         elif variable == 6:
-            principal = get_integer_input("Enter the principal amount (in dollars): ")
-            final = get_integer_input("Enter the Final/Total Value (in dollars): ")
-            interest_earned = get_integer_input("Enter the interest amount (in dollars): ")
-            rate = get_integer_input("Enter the rate of interest (in percentage): ")
-            time = get_integer_input("Enter the time period (in years): ")
+            principal = get_rounded_input("Enter the principal amount (in dollars): ")
+            final = get_rounded_input("Enter the Final/Total Value (in dollars): ")
+            interest_earned = get_rounded_input("Enter the interest amount (in dollars): ")
+            rate = get_rounded_input("Enter the rate of interest (in percentage): ")
+            time = get_rounded_input("Enter the time period (in years): ")
 
             
             while True:
